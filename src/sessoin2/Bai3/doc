@@ -1,0 +1,50 @@
+// Đánh dấu đây là Functional Interface
+// Functional Interface chỉ được phép có 1 phương thức trừu tượng
+@FunctionalInterface
+public interface Authenticatable {
+
+    // ==================================================
+    // BƯỚC 1: Tạo phương thức trừu tượng
+    // ==================================================
+    // Phương thức này dùng để lấy mật khẩu của người dùng
+    // Các class triển khai interface này bắt buộc phải override phương thức này
+    String getPassword();
+
+
+    // ==================================================
+    // BƯỚC 2: Tạo phương thức mặc định (default method)
+    // ==================================================
+    // Phương thức này kiểm tra người dùng có được xác thực hay không
+    // Logic: nếu mật khẩu khác null và không rỗng thì trả về true
+    // Class triển khai KHÔNG cần viết lại logic này
+    default boolean isAuthenticated() {
+
+        // Lấy mật khẩu từ phương thức getPassword()
+        String password = getPassword();
+
+        // Kiểm tra mật khẩu
+        return password != null && !password.isEmpty();
+    }
+
+
+    // ==================================================
+    // BƯỚC 3: Tạo phương thức tĩnh (static method)
+    // ==================================================
+    // Phương thức này dùng để mô phỏng việc mã hóa mật khẩu
+    // Có thể gọi trực tiếp bằng tên interface
+    // Ví dụ: Authenticatable.encrypt("123456")
+    static String encrypt(String rawPassword) {
+
+        // Nếu mật khẩu null thì trả về null
+        if (rawPassword == null) {
+            return null;
+        }
+
+        // Mô phỏng mã hóa đơn giản bằng hashCode
+        // Thêm tiền tố ENC_ để biểu thị đã mã hóa
+        return "ENC_" + rawPassword.hashCode();
+    }
+}
+
+
+Main===========
